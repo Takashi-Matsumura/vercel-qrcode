@@ -8,12 +8,13 @@ const CameraStreamWithQRReader = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [qrCodeText, setQrCodeText] = useState("");
+  const [facingMode, setFacingMode] = useState("user"); // デフォルトはフロントカメラ
 
   useEffect(() => {
     // カメラへのアクセス
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
-        .getUserMedia({ video: true })
+        .getUserMedia({ video: { facingMode } })
         .then((stream) => {
           videoRef.current.srcObject = stream;
           videoRef.current.muted = true; // ビデオをミュートに設定
@@ -26,7 +27,7 @@ const CameraStreamWithQRReader = () => {
     } else {
       console.error("getUserMedia not supported");
     }
-  }, []);
+  }, [facingMode]);
 
   const scanQRCode = () => {
     const canvas = canvasRef.current;
@@ -59,6 +60,10 @@ const CameraStreamWithQRReader = () => {
     scan();
   };
 
+  const switchCamera = () => {
+    setFacingMode((prev) => (prev === "user" ? "environment" : "user")); // カメラを切り替え
+  };
+
   return (
     <div>
       <video ref={videoRef} style={{ display: "none" }} />
@@ -74,6 +79,7 @@ const CameraStreamWithQRReader = () => {
           playsInline
           muted
         />
+        <button onClick={switchCamera}>Switch Camera</button>
         <p className="p-10">QRコードの内容: {qrCodeText}</p>
       </div>
     </div>
