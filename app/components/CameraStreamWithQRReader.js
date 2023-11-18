@@ -71,6 +71,8 @@ const CameraStreamWithQRReader = () => {
           width="320"
           height="240"
           autoPlay
+          playsInline
+          muted
         />
         <p className="p-10">QRコードの内容: {qrCodeText}</p>
       </div>
