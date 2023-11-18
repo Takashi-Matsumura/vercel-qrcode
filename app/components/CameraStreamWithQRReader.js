@@ -16,6 +16,7 @@ const CameraStreamWithQRReader = () => {
         .getUserMedia({ video: true })
         .then((stream) => {
           videoRef.current.srcObject = stream;
+          videoRef.current.muted = true; // ビデオをミュートに設定
           videoRef.current.play();
           scanQRCode();
         })
