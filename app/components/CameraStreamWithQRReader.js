@@ -52,7 +52,9 @@ const CameraStreamWithQRReader = () => {
         if (code) {
           const decoder = new TextDecoder("utf-8");
           const decodedData = decoder.decode(new Uint8Array(code.binaryData));
-          setQrCodeText(decodedData);
+          const jsonData = JSON.parse(decodedData);
+          console.log(jsonData);
+          setQrCodeText(jsonData);
         } else {
           requestAnimationFrame(scan);
         }
