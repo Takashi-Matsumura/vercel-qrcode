@@ -79,7 +79,7 @@ const CameraStreamWithQRReader = () => {
         <video
           className="p-10"
           ref={videoRef}
-          width="320"
+          width="240"
           height="240"
           autoPlay
           playsInline
