@@ -79,11 +79,12 @@ const CameraStreamWithQRReader = () => {
         <video
           className="p-10"
           ref={videoRef}
-          width="240"
-          height="240"
+          width="320"
+          height="320"
           autoPlay
           playsInline
           muted
+          style={{ objectFit: "cover" }}
         />
         <div className="flex items-center justify-between">
           <button
