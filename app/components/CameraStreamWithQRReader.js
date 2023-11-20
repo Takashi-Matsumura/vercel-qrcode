@@ -3,6 +3,7 @@
 // components/CameraStreamWithQRReader.js
 import React, { useRef, useEffect, useState } from "react";
 import jsQR from "jsqr";
+import ClientSideClock from "./ClientSideClock";
 
 const CameraStreamWithQRReader = () => {
   const videoRef = useRef(null);
@@ -10,16 +11,23 @@ const CameraStreamWithQRReader = () => {
   const [qrCodeText, setQrCodeText] = useState("");
   const [facingMode, setFacingMode] = useState("user"); // デフォルトはフロントカメラ
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [isMounted, setIsMounted] = useState(false); // ここでisMountedを定義
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
-
-    return () => {
-      clearInterval(timer);
-    };
+    setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      const timer = setInterval(() => {
+        setCurrentTime(new Date());
+      }, 1000);
+
+      return () => {
+        clearInterval(timer);
+      };
+    }
+  }, [isMounted]);
 
   useEffect(() => {
     // カメラへのアクセス
@@ -114,7 +122,7 @@ const CameraStreamWithQRReader = () => {
           {qrCodeText.name}
         </p>
         <p className="flex justify-center text-lg p-5 w-full">
-          時刻: {currentTime.toLocaleTimeString()}
+          時刻:{isMounted ? currentTime.toLocaleTimeString() : "Loading..."}
         </p>
         <div className="flex justify-end p-2">
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
