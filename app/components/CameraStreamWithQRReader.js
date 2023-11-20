@@ -19,7 +19,7 @@ const CameraStreamWithQRReader = () => {
           videoRef.current.srcObject = stream;
           videoRef.current.muted = true; // ビデオをミュートに設定
           videoRef.current.play();
-          scanQRCode();
+          //scanQRCode();
         })
         .catch((error) => {
           console.error("Error accessing the camera: ", error);
@@ -48,6 +48,7 @@ const CameraStreamWithQRReader = () => {
         const code = jsQR(imageData.data, imageData.width, imageData.height, {
           inversionAttempts: "dontInvert",
         });
+        console.log(code);
         if (code) {
           setQrCodeText(code.data);
         } else {
@@ -79,7 +80,10 @@ const CameraStreamWithQRReader = () => {
           playsInline
           muted
         />
-        <button onClick={switchCamera}>Switch Camera</button>
+        <div className="flex items-center justify-between">
+          <button onClick={switchCamera}>Switch Camera</button>
+          <button onClick={scanQRCode}>Push me!</button>
+        </div>
         <p className="p-10">QRコードの内容: {qrCodeText}</p>
       </div>
     </div>
