@@ -96,8 +96,18 @@ const CameraStreamWithQRReader = () => {
           muted
         />
         <div className="flex items-center justify-between">
-          <button onClick={switchCamera}>Switch Camera</button>
-          <button onClick={scanQRCode}>Push me!</button>
+          <button
+            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+            onClick={switchCamera}
+          >
+            カメラ切替
+          </button>
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={scanQRCode}
+          >
+            QRコード
+          </button>
         </div>
         <p className="pb-2 pt-10">利用者:</p>
         <p className="flex text-3xl justify-center font-bold border py-5 w-full">
