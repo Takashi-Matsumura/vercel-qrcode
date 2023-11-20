@@ -48,9 +48,11 @@ const CameraStreamWithQRReader = () => {
         const code = jsQR(imageData.data, imageData.width, imageData.height, {
           inversionAttempts: "dontInvert",
         });
-        console.log(code);
+
         if (code) {
-          setQrCodeText(code.data);
+          const decoder = new TextDecoder("utf-8");
+          const decodedData = decoder.decode(new Uint8Array(code.binaryData));
+          setQrCodeText(decodedData);
         } else {
           requestAnimationFrame(scan);
         }
