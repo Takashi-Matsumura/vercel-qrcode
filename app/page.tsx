@@ -6,14 +6,14 @@ import CameraStreamWithQRReader from "./components/CameraStreamWithQRReader";
 export default function Home() {
   return (
     <div>
-      <header>header</header>
+      <header>ヘルパーステーションOCC</header>
       <main className="main h-screen">
         <div className="flex flex-col justify-center items-center">
           <h1>Camera Stream Sample</h1>
           <CameraStreamWithQRReader />
         </div>
       </main>
-      <footer className="text-right">@OCC</footer>
+      <footer className="text-right">@OCC 2023 α</footer>
     </div>
   );
 }

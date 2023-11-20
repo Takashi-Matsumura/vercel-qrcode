@@ -9,6 +9,17 @@ const CameraStreamWithQRReader = () => {
   const canvasRef = useRef(null);
   const [qrCodeText, setQrCodeText] = useState("");
   const [facingMode, setFacingMode] = useState("user"); // デフォルトはフロントカメラ
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   useEffect(() => {
     // カメラへのアクセス
@@ -88,7 +99,18 @@ const CameraStreamWithQRReader = () => {
           <button onClick={switchCamera}>Switch Camera</button>
           <button onClick={scanQRCode}>Push me!</button>
         </div>
-        <p className="p-10">QRコードの内容: {qrCodeText}</p>
+        <p className="pb-2 pt-10">利用者:</p>
+        <p className="flex text-3xl justify-center font-bold border py-5 w-full">
+          {qrCodeText.name}
+        </p>
+        <p className="flex justify-center text-lg p-5 w-full">
+          時刻: {currentTime.toLocaleTimeString()}
+        </p>
+        <div className="flex justify-end p-2">
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            （ヘルパー）確認
+          </button>
+        </div>
       </div>
     </div>
   );
