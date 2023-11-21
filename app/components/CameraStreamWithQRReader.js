@@ -4,6 +4,13 @@
 import React, { useRef, useEffect, useState } from "react";
 import jsQR from "jsqr";
 import ClientSideClock from "./ClientSideClock";
+import { db } from "../firebaseConfig";
+import {
+  getDocs,
+  addDoc,
+  collection,
+  serverTimestamp,
+} from "firebase/firestore";
 
 const CameraStreamWithQRReader = () => {
   const videoRef = useRef(null);
@@ -75,6 +82,19 @@ const CameraStreamWithQRReader = () => {
     setQrCodeText("");
   };
 
+  const recordToFirestore = async () => {
+    try {
+      const docRef = await addDoc(collection(db, "clients"), {
+        name: qrCodeText.name,
+        time: serverTimestamp(),
+      });
+      console.log("Document written with ID: ", docRef.id);
+      alert("サーバに登録しました");
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
+  };
+
   return (
     <div>
       <video ref={videoRef} style={{ display: "none" }} />
@@ -113,7 +133,10 @@ const CameraStreamWithQRReader = () => {
           <ClientSideClock className="flex justify-center w-full" />
         </div>
         <div className="flex justify-end p-2">
-          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            onClick={recordToFirestore}
+          >
             （ヘルパー）確認
           </button>
         </div>
