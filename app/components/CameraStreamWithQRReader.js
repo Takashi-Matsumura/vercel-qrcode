@@ -9,18 +9,18 @@ const CameraStreamWithQRReader = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [qrCodeText, setQrCodeText] = useState("");
-  const [facingMode, setFacingMode] = useState("user"); // デフォルトはフロントカメラ
+  const [facingMode, setFacingMode] = useState("environment"); // 'user' or 'environment'
 
   useEffect(() => {
     // カメラへのアクセス
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      console.log(facingMode);
       navigator.mediaDevices
         .getUserMedia({ video: { facingMode } })
         .then((stream) => {
           videoRef.current.srcObject = stream;
           videoRef.current.muted = true; // ビデオをミュートに設定
           videoRef.current.play();
-          //scanQRCode();
         })
         .catch((error) => {
           console.error("Error accessing the camera: ", error);
@@ -66,33 +66,10 @@ const CameraStreamWithQRReader = () => {
     scan();
   };
 
-  // const switchCamera = () => {
-  //   setFacingMode((prev) => (prev === "user" ? "environment" : "user")); // カメラを切り替え
-  // };
-  let currentDeviceId = "";
-
-  const switchCamera = async (videoRef) => {
-    const devices = await navigator.mediaDevices.enumerateDevices();
-    const videoDevices = devices.filter(
-      (device) => device.kind === "videoinput"
+  const toggleFacingMode = () => {
+    setFacingMode((prevFacingMode) =>
+      prevFacingMode === "user" ? "environment" : "user"
     );
-    const nextDevice = videoDevices.find(
-      (device) => device.deviceId !== currentDeviceId
-    );
-
-    if (nextDevice) {
-      currentDeviceId = nextDevice.deviceId;
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { deviceId: currentDeviceId },
-        });
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-      } catch (error) {
-        console.error("Error switching camera:", error);
-      }
-    }
   };
 
   return (
@@ -113,7 +90,7 @@ const CameraStreamWithQRReader = () => {
         <div className="flex items-center justify-between">
           <button
             className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            onClick={switchCamera}
+            onClick={toggleFacingMode}
           >
             カメラ切替
           </button>
