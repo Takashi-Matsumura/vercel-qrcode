@@ -66,8 +66,29 @@ const CameraStreamWithQRReader = () => {
     scan();
   };
 
-  const switchCamera = () => {
-    setFacingMode((prev) => (prev === "user" ? "environment" : "user")); // カメラを切り替え
+  // const switchCamera = () => {
+  //   setFacingMode((prev) => (prev === "user" ? "environment" : "user")); // カメラを切り替え
+  // };
+  let currentDeviceId = "";
+
+  const switchCamera = async (videoRef) => {
+    const devices = await navigator.mediaDevices.enumerateDevices();
+    const videoDevices = devices.filter(
+      (device) => device.kind === "videoinput"
+    );
+    const nextDevice = videoDevices.find(
+      (device) => device.deviceId !== currentDeviceId
+    );
+
+    if (nextDevice) {
+      currentDeviceId = nextDevice.deviceId;
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { deviceId: currentDeviceId },
+      });
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+    }
   };
 
   return (
