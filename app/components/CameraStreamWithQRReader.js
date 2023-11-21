@@ -83,6 +83,10 @@ const CameraStreamWithQRReader = () => {
   };
 
   const recordToFirestore = async () => {
+    if (!qrCodeText.name) {
+      return;
+    }
+
     try {
       const docRef = await addDoc(collection(db, "clients"), {
         name: qrCodeText.name,
