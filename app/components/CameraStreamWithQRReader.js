@@ -14,7 +14,6 @@ const CameraStreamWithQRReader = () => {
   useEffect(() => {
     // カメラへのアクセス
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      console.log(facingMode);
       navigator.mediaDevices
         .getUserMedia({ video: { facingMode } })
         .then((stream) => {
@@ -72,6 +71,10 @@ const CameraStreamWithQRReader = () => {
     );
   };
 
+  const clearQrCodeText = () => {
+    setQrCodeText("");
+  };
+
   return (
     <div>
       <video ref={videoRef} style={{ display: "none" }} />
@@ -97,6 +100,7 @@ const CameraStreamWithQRReader = () => {
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             onClick={scanQRCode}
+            onDoubleClick={clearQrCodeText}
           >
             QRコード
           </button>
