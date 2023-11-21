@@ -82,11 +82,15 @@ const CameraStreamWithQRReader = () => {
 
     if (nextDevice) {
       currentDeviceId = nextDevice.deviceId;
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: { deviceId: currentDeviceId },
-      });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { deviceId: currentDeviceId },
+        });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (error) {
+        console.error("Error switching camera:", error);
       }
     }
   };
