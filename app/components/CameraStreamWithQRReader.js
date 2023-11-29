@@ -82,10 +82,8 @@ const CameraStreamWithQRReader = () => {
   const [deviceId, setDeviceId] = useState(null);
 
   const handleSwitchCamera = async () => {
-    if (deviceId !== null) {
-      const nextDeviceId = await switchCamera(deviceId);
-      setDeviceId(nextDeviceId);
-    }
+    const nextDeviceId = await switchCamera(deviceId);
+    setDeviceId(nextDeviceId);
   };
 
   const clearQrCodeText = () => {
