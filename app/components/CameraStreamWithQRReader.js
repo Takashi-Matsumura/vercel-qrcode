@@ -11,6 +11,7 @@ import {
   collection,
   serverTimestamp,
 } from "firebase/firestore";
+import { switchCamera } from "./camera.js";
 
 const CameraStreamWithQRReader = () => {
   const videoRef = useRef(null);
@@ -78,6 +79,15 @@ const CameraStreamWithQRReader = () => {
     );
   };
 
+  const [deviceId, setDeviceId] = useState(null);
+
+  const handleSwitchCamera = async () => {
+    if (deviceId !== null) {
+      const nextDeviceId = await switchCamera(deviceId);
+      setDeviceId(nextDeviceId);
+    }
+  };
+
   const clearQrCodeText = () => {
     setQrCodeText("");
   };
@@ -117,7 +127,7 @@ const CameraStreamWithQRReader = () => {
         <div className="flex items-center justify-between">
           <button
             className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            onClick={toggleFacingMode}
+            onClick={handleSwitchCamera}
           >
             カメラ切替
           </button>
