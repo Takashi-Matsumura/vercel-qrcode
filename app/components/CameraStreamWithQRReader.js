@@ -73,17 +73,25 @@ const CameraStreamWithQRReader = () => {
     scan();
   };
 
-  const toggleFacingMode = () => {
-    setFacingMode((prevFacingMode) =>
-      prevFacingMode === "user" ? "environment" : "user"
-    );
+  const isAndroid = () => {
+    return /Android/i.test(navigator.userAgent);
+  };
+
+  const isIOS = () => {
+    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
   };
 
   const [deviceId, setDeviceId] = useState(null);
-
-  const handleSwitchCamera = async () => {
-    const nextDeviceId = await switchCamera(deviceId);
-    setDeviceId(nextDeviceId);
+  // カメラ切り替え関数
+  const switchCameraFunction = async () => {
+    if (isAndroid()) {
+      const nextDeviceId = await switchCamera(deviceId);
+      setDeviceId(nextDeviceId);
+    } else if (isIOS()) {
+      setFacingMode((prevFacingMode) =>
+        prevFacingMode === "user" ? "environment" : "user"
+      );
+    }
   };
 
   const clearQrCodeText = () => {
@@ -125,7 +133,7 @@ const CameraStreamWithQRReader = () => {
         <div className="flex items-center justify-between">
           <button
             className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handleSwitchCamera}
+            onClick={switchCameraFunction}
           >
             カメラ切替
           </button>
